@@ -54,3 +54,36 @@ ALTER TABLE animals ADD species_id INT;
 ALTER TABLE animals ADD owner_id INT;
 ALTER TABLE animals ADD FOREIGN KEY (species_id) REFERENCES species(id);
 ALTER TABLE animals ADD FOREIGN KEY (owner_id) REFERENCES owners(id);
+
+/* Part 4 */
+/* Create a table named vets with the following columns:
+id: integer (set it as autoincremented PRIMARY KEY)
+name: string
+age: integer
+date_of_graduation: date
+*/
+CREATE TABLE vets(
+  id SERIAL PRIMARY KEY,
+  name VARCHAR(100),
+  age INT,
+  date_of_graduation DATE
+);
+
+/* There is a many-to-many relationship between the tables species and vets: a vet can specialize
+in multiple species, and a species can have multiple vets specialized in it. Create a "join table"
+called specializations to handle this relationship.
+*/
+CREATE TABLE specializations(
+  species_id INT REFERENCES species(id),
+  vet_id INT REFERENCES vets(id)
+);
+
+/* There is a many-to-many relationship between the tables animals and vets: an animal can visit
+multiple vets and one vet can be visited by multiple animals. Create a "join table" called visits
+to handle this relationship, it should also keep track of the date of the visit.
+*/
+CREATE TABLE visits (
+  animal_id INT REFERENCES animals(id),
+  vet_id INT REFERENCES vets(id),
+  date_of_visit DATE
+);
